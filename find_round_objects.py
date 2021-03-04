@@ -6,7 +6,6 @@ import ustruct
 from pyb import USB_VCP, CAN
 import pyb
 
-
 sensor.reset()
 sensor.set_pixformat(sensor.GRAYSCALE) #changing it from RGB565 to GRAYSCALE
 sensor.set_framesize(sensor.QQVGA)
@@ -22,5 +21,3 @@ while(True):
 
     for circle in circles:
         img.draw_circle(circle.x(), circle.y(), circle.r(), thickness = 4 ) # draws circles for every circle found
-
-
