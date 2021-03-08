@@ -25,9 +25,8 @@ blue = pyb.LED(3)
 SCREEN_CENTERP = 80 # screen center (pixels) horizontal
 VERTICAL_CENTERP = 60 # Screen center (pixels) vertical
 
-
 sensor.reset()
-sensor.set_pixformat(sensor.GRAYSCALE) #changing it from RGB565 to GRAYSCALE
+sensor.set_pixformat(sensor.GRAYSCALE) # changing it from RGB565 to GRAYSCALE TODO: Check if needed
 sensor.set_framesize(sensor.QQVGA)
 sensor.skip_frames(time = 2000)
 clock = time.clock()
@@ -44,7 +43,6 @@ autoExposure = autoExposureSum/readExposureNum
 manualExposure = int(autoExposure * KMAN) # scale factor for decreasing autoExposure
 sensor.set_auto_exposure(False,  manualExposure) # autoset exposures
 
-values_history = [] # for median function
 
 HFOV = 70.8 #horzontal field of view
 VFOV = 55.6 #vertical field of view
@@ -74,11 +72,10 @@ def getDistanceVFOV(diameter, circle, img, VFOV): # returns the distance with ac
 while(True):
     clock.tick()
     img = sensor.snapshot()
-    img = img.gaussian(1) # applying gaussian blur
+    img = img.gaussian(1) # applying gaussian blur TODO: Test if blur needed
     circles = img.find_circles() #finds the circular objects
 
     for circle in circles:
-
         diameter = circle.r() * 2.0
 
         drawCircle(img, circle) # drawing a cirlce
@@ -89,16 +86,11 @@ while(True):
         circleDistH = getDistanceHFOV(diameter, circle, img, HFOV) # not quite accurate yet
         circleDistV = getDistanceVFOV(diameter, circle, img, VFOV) # not quite accurate yet
 
-        values = [circle_centerX, circle_centerY, circleDistH, circleDistV]
+        values = [circle_centerX, circle_centerY, circleDistH, circleDistV, 0, 0] # TODO: add angle
 
         if(COMMS_METHOD == "print"):
             print(values)
         elif(COMMS_METHOD == "usb"): # sending the data via USB serial to the robot
-    #       values = memoryview(values)
             usb.send(ustruct.pack("d", values[0], values[1], values[2], values[3], values[4], values[5]))
         elif(COMMS_METHOD == "can"):
             pass
-
-
-
-
