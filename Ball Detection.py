@@ -27,12 +27,8 @@ while(True):
 
     img = sensor.snapshot()
 
-    for blobs in img.find_blobs(yellow_threshold_BBG):
+    for blobs in img.find_blobs(yellow_threshold_BBG): #change threshold depending on which background
         if(blobs.roundness() > 0.77 and blobs.pixels() > 250):
             img.draw_rectangle(blobs.x(), blobs.y(), blobs.w(), blobs.h(), (255, 0, 0), 2)
-    """
-    for blobs in img.find_blobs(yellow_threshold_WBG):
-        if(blobs.roundness() > 0.77 and blobs.pixels() > 250):
-            img.draw_rectangle(blobs.x(), blobs.y(), blobs.w(), blobs.h(), (255, 0, 0), 2)
-    """
+
 
